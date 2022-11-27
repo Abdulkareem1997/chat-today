@@ -1,23 +1,34 @@
-import logo from './logo.svg';
-import './App.css';
 
+import './App.css';
+import LoginPage from './Pages/Login';
+import Home from './Pages/Home';
+import NavBar from './components/NavBar';
+import {
+  Route,
+  Switch,
+  useLocation,
+  useHistory
+} from "react-router-dom";
+import { useState, useEffect, createContext } from 'react';
 function App() {
+  const [isAuth, setIsAuth] = useState(false)
+  const location = useLocation();
+  const history = useHistory();
+
+
   return (
     <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
+        <NavBar isAuth={isAuth} setIsAuth={setIsAuth}/>
+        <Switch>
+          <Route exact path="/">
+            <LoginPage setIsAuth={setIsAuth} isAuth={isAuth}/>
+          </Route>
+          {isAuth && <>
+          <Route path="/home">
+            <Home/>
+          </Route>
+          </>}
+        </Switch>
     </div>
   );
 }
